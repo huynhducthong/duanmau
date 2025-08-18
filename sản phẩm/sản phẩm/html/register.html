@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <!-- CSS -->
+     <link rel="stylesheet" href="../html/css/auth.css">
+</head>
+<body>
+    <div class="form-wrapper">
+        <div class="logo"><img width="110" class="invert" src="./js/text.js" alt=""></div>
+        <h2>Sign Up</h2>
+        <form action="">
+            <div class="form-control">
+                <input type="text" name="username" id="username" required>
+                <label>Username</label>
+            </div>
+
+            <div class="form-control">
+                <input type="email" name="email" id="email" required>
+                <label>Email</label>
+            </div>
+
+            <div class="form-control">
+                <input type="password" name="password" id="password" required>
+                <label>Password</label>
+            </div>
+
+            <button class="btn-signup" type="submit">Sign Up</button>
+
+            <div class="need">
+                <div>
+                    <input type="checkbox" name="remember" id="remember">Remember me
+                </div>
+                <a href="">Need help?</a>
+            </div>
+        </form>
+
+        <div class="already">
+            <p>Already have an account? <b><a href="login.html">Sign in now</a></b></p>
+        </div>
+    </div>
+
+     <!-- Firebase -->
+     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-app-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-firestore-compat.js"></script>
+     <script src="https://www.gstatic.com/firebasejs/10.13.2/firebase-storage-compat.js"></script>
+ 
+     <!-- Firebase Auth -->
+     <script src="https://cdnjs.cloudflare.com/ajax/libs/firebase/10.13.1/firebase-auth-compat.min.js"
+         integrity="sha512-b2PGOE6ClpdFR5WZylPqJ9NEtHyGtdXKIe5wI0qRKVg3VeH9Km8CvihpnySwf6v21TV2cMTUp/BuglUiFLB38Q=="
+         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script src="./js/fireabase_config.js"></script>
+    <script src="./js/register.js"></script>
+
+</body>
+</html>

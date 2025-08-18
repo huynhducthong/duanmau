@@ -1,0 +1,24 @@
+.anh {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 4 cột */
+    gap: 20px; /* khoảng cách giữa các ô */
+    padding: 20px;
+}
+
+.anhmonan {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.anhmonan img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+
+
