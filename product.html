@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chi tiết sản phẩm</title>
+  <style>
+    .product-detail {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+    .product-detail img {
+      max-width: 400px;
+      margin: 20px auto;
+      display: block;
+      border-radius: 12px;
+    }
+    .loading {
+      text-align: center;
+      font-size: 20px;
+      color: #ff6b35;
+      margin-top: 50px;
+    }
+    .back-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 10px 20px;
+      background: #4CAF50;
+      color: white;
+      border-radius: 8px;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="content">
+    <div class="loading">⏳ Đang tải sản phẩm...</div>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get("type");
+    const id = parseInt(urlParams.get("id"));
+
+    // Toàn bộ danh sách mặc định giống order.html
+    const defaultFoods = [
+      { name: "Bánh mì", price: 20000, description: "Ổ bánh mì giòn ngon", image: "https://media.vov.vn/sites/default/files/styles/large/public/2024-12/cach_an_banh_mi_1.jpg" },
+      { name: "Phở bò", price: 50000, description: "Tô phở bò nóng hổi", image: "https://i.ytimg.com/vi/c9GfHgMk1ac/maxresdefault.jpg" },
+      { name: "Cơm chiên", price: 35000, description: "Cơm chiên Dương Châu", image: "https://image.baophapluat.vn/w840/Uploaded/2025/ycgvptcc/2020_05_28/cach-lam-com-chien-duong-chau-600x481_DLZM.jpg" },
+      { name: "Cơm sườn", price: 35000, description: "Cơm sườn thơm ngon", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSAisqlcgi1FcmnumSIixgmVM-rl23sGwOcQg&s" },
+      { name: "Cháo Đậu Đỏ", price: 20000, description: "Cháo đậu đỏ bổ dưỡng", image: "https://cdn.tgdd.vn/Files/2018/12/03/1135382/3-cach-nau-chao-dau-do--18-760x367.jpg" },
+      { name: "Bún thịt nướng", price: 35000, description: "Bún thịt nướng thơm ngon", image: "https://danviet.ex-cdn.com/files/f1/upload/1-2015/images/2015-03-24/1434346001-auvmcach-lam-bun-thit-nuong-giadinhvn-233-1010.jpg" },
+      { name: "Bún đậu", price: 65000, description: "Bún đậu mắm tôm chuẩn vị", image: "https://img.tripi.vn/cdn-cgi/image/width=700,height=700/https://img5.thuthuatphanmem.vn/uploads/2021/11/24/anh-bun-dau-mam-tom-chat-luong-cao_101900877.jpeg" },
+      { name: "Hủ tiếu", price: 20000, description: "Hủ tiếu nước trong, thơm ngon", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQflVXe_sCtkuBWr6IZO1Zemc1PYRpJECHFQ&s" },
+      { name: "Bánh mì phá lấu", price: 30000, description: "Ổ bánh mì phá lấu đậm đà", image: "https://www.lobanhmi.vn/wp-content/uploads/2024/10/banh-mi-pha-lau.jpg" },
+      { name: "Phở gà", price: 50000, description: "Tô phở gà nóng hổi", image: "https://th.bing.com/th/id/OIP.do9xfsOAvwjnom-BRfNTMgHaEL" },
+      { name: "Cơm gà", price: 40000, description: "Cơm gà ngon miệng", image: "https://static.vinwonders.com/production/com-ga-hue-1.jpg" },
+      { name: "Cơm nắm", price: 25000, description: "Cơm nắm tiện lợi", image: "https://img-global.cpcdn.com/recipes/fca0dc2538317eed/200x200cq70/com-nam-ca-hoi.jpg" },
+      { name: "Cháo gà", price: 20000, description: "Cháo gà bổ dưỡng", image: "https://static.vinwonders.com/2022/12/chao-ga-da-nang-1.jpg" },
+      { name: "Bún chả", price: 35000, description: "Bún chả Hà Nội", image: "https://bizweb.dktcdn.net/thumb/grande/100/442/328/articles/bun-cha-ha-noi.jpg" },
+      { name: "Bún bò huế", price: 65000, description: "Bún bò Huế cay nồng", image: "https://eggyolk.vn/wp-content/uploads/2024/06/Cach-nau-Bun-Bo-Hue-tai-nha.jpg" },
+      { name: "Hủ tiếu chay", price: 20000, description: "Hủ tiếu chay thanh đạm", image: "https://cdn.tgdd.vn/2021/07/CookProduct/HutieuNamVangchay-1200x676.jpg" },
+      { name: "Bánh mì sandwich", price: 45000, description: "Bánh mì sandwich mềm ngon", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgjPUq-4Zqau9DePFc0hbBBPfk837j5mHRQQ&s" },
+      { name: "Phở cuốn", price: 45000, description: "Phở cuốn thanh mát", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSaYQ6r_PdgnenWp6ml-Kc1gskiJTes-Dq47Q&s" },
+      { name: "Cơm tấm", price: 35000, description: "Cơm tấm sườn bì chả", image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTjMTotddbFGWEaQfqkSoBR0DR3jc_oh_S3g&s" },
+      { name: "Cơm lam", price: 35000, description: "Cơm lam đặc sản", image: "https://tse4.mm.bing.net/th/id/OIP.fwsSG7bYoe0pf1WqXV_8bwAAAA?r=0&rs=1&pid=ImgDetMain&o=7&rm=3" },
+      { name: "Cháo lòng", price: 20000, description: "Cháo lòng đậm vị", image: "https://duonggiahotel.vn/wp-content/uploads/2023/11/anh-bia-quan-chao-long-da-nang.jpg" },
+      { name: "Bún xào", price: 35000, description: "Bún xào rau củ", image: "https://cdn3.ivivu.com/2020/05/bun-thit-xao-ivivu-1.jpg" },
+      { name: "Bún riêu", price: 55000, description: "Bún riêu cua đồng", image: "https://static-images.vnncdn.net/files/publish/2023/4/3/bun-rieu-cua-fb-464.jpg" },
+      { name: "Hủ tiếu mực", price: 80000, description: "Hủ tiếu mực đặc sản", image: "https://tse4.mm.bing.net/th/id/OIP.TKw1Dt3fC9JMzvDaLabYIwHaE7" }
+    ];
+
+    // Admin thêm sản phẩm
+    const adminFoods = JSON.parse(localStorage.getItem("foods")) || [];
+
+    function loadProduct() {
+      let product = null;
+
+      if (type === "default") {
+        product = defaultFoods[id];
+      } else if (type === "admin") {
+        product = adminFoods[id];
+      }
+
+      const content = document.getElementById("content");
+      if (!product) {
+        content.innerHTML = `<p style="color:red; text-align:center;">❌ Sản phẩm không tồn tại!</p>`;
+        return;
+      }
+
+      content.innerHTML = `
+        <div class="product-detail">
+          <h1>${product.name}</h1>
+          <img src="${product.image}" alt="${product.name}">
+          <p>${product.description}</p>
+          <p><strong>Giá:</strong> ${product.price.toLocaleString()} VND</p>
+          <a href="order.html" class="back-button">← Quay lại</a>
+        </div>
+      `;
+    }
+
+    setTimeout(loadProduct, 1500); // loading giả lập
+  </script>
+</body>
+</html>

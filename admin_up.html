@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin - Thêm món ăn</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #fafafa;
+      padding: 20px;
+      color: #333;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ff6b35;
+    }
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      max-width: 500px;
+      margin: auto;
+    }
+    form input, form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      margin-bottom: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    form button {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      color: #fff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: 0.3s;
+    }
+    form button:hover {
+      background: linear-gradient(135deg, #f7931e, #ff6b35);
+    }
+    #food-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-top: 30px;
+      justify-content: flex-start;
+    }
+    .item {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 220px;
+      overflow: hidden;
+      text-align: center;
+      transition: 0.2s;
+    }
+    .item:hover { transform: translateY(-5px); }
+    .item img { width: 100%; height: 150px; object-fit: cover; }
+    .item h3 { margin: 10px; font-size: 18px; }
+    .item p { margin: 0 10px 10px; font-size: 14px; color: #666; }
+    .item button {
+      margin-bottom: 10px;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .delete-btn {
+      background: #e74c3c;
+      color: #fff;
+    }
+    .delete-btn:hover { background: #c0392b; }
+  </style>
+</head>
+<body>
+  <h2>Trang Admin - Thêm món ăn</h2>
+
+  <form id="foodForm">
+    <label>Tên sản phẩm:</label>
+    <input type="text" id="name" required>
+
+    <label>Giá:</label>
+    <input type="number" id="price" required>
+
+    <label>Mô tả:</label>
+    <textarea id="description" rows="3" required></textarea>
+
+    <label>Ảnh sản phẩm:</label>
+    <input type="file" id="image" accept="image/*" required>
+
+    <button type="submit">Thêm sản phẩm</button>
+  </form>
+
+  <h2>Danh sách món đã thêm</h2>
+  <div id="food-list"></div>
+
+  <script>
+    function loadFoods() {
+      let list = document.getElementById("food-list");
+      list.innerHTML = "";
+      let foods = JSON.parse(localStorage.getItem("foods")) || [];
+
+      foods.forEach((food, index) => {
+        let div = document.createElement("div");
+        div.className = "item";
+        div.innerHTML = `
+          <img src="${food.image}" alt="${food.name}">
+          <h3>${food.name}</h3>
+          <p>${food.price} VND</p>
+          <p>${food.description || ""}</p>
+          <button class="delete-btn" onclick="deleteFood(${index})">Xóa</button>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function deleteFood(index) {
+      let foods = JSON.parse(localStorage.getItem("foods")) || [];
+      foods.splice(index, 1);
+      localStorage.setItem("foods", JSON.stringify(foods));
+      loadFoods();
+      alert("❌ Đã xoá món!");
+    }
+
+    document.getElementById("foodForm").addEventListener("submit", function(e){
+      e.preventDefault();
+
+      let name = document.getElementById("name").value;
+      let price = document.getElementById("price").value;
+      let description = document.getElementById("description").value;
+      let file = document.getElementById("image").files[0];
+
+      let reader = new FileReader();
+      reader.onload = function(event) {
+        let foods = JSON.parse(localStorage.getItem("foods")) || [];
+        foods.unshift({   // 👉 unshift để món mới lên đầu
+          name, 
+          price, 
+          description, 
+          image: event.target.result
+        });
+        localStorage.setItem("foods", JSON.stringify(foods));
+
+        loadFoods();
+        alert("✅ Đã thêm món mới!");
+        document.getElementById("foodForm").reset();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    loadFoods();
+  </script>
+</body>
+</html>

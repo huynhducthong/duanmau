@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bán đồ ăn</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" 
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <!-- CSS -->
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #f8f8f8;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 15px;
+      color: #333;
+      line-height: 1.6;
+    }
+    header {
+      background: #fff;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo { font-size: 24px; font-weight: bold; color: #e63946; text-decoration: none; }
+    header nav { display: flex; gap: 30px; }
+    header nav a {
+      text-decoration: none; color: #333; font-weight: 500;
+      transition: color 0.3s ease;
+    }
+    header nav a:hover { color: #e63946; }
+    .header-icons { display: flex; gap: 15px; }
+    .header-icons a { color: #333; font-size: 18px; transition: color 0.3s ease; }
+    .header-icons a:hover { color: #e63946; }
+
+    .banner {
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                  url("https://studiovietnam.com/wp-content/uploads/2023/02/chup-anh-mon-an-1.jpg") center/cover no-repeat;
+      padding: 120px 40px;
+      color: #fff;
+      text-align: center;
+    }
+    .banner h2 { font-size: 48px; margin-bottom: 20px; font-weight: 700; }
+    .banner p { font-size: 20px; max-width: 600px; margin: 0 auto; opacity: 0.9; }
+
+    swiper-container { width: 100%; height: 400px; }
+    swiper-slide img {
+      width: 100%; height: 100%; object-fit: cover; border-radius: 20px;
+    }
+
+    .content { padding: 60px 40px; max-width: 1200px; margin: 0 auto; }
+    .content h2 { text-align: center; margin-bottom: 40px; font-size: 32px; }
+    .product-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px;
+    }
+    .product-card {
+      background: #fff; border-radius: 16px; padding: 20px; text-align: center;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      transition: all 0.3s ease; border: 1px solid #f0f0f0;
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+    }
+    .product-card img {
+      width: 100%; height: 200px; object-fit: cover;
+      border-radius: 12px; margin-bottom: 15px;
+    }
+    .product-card .name { font-size: 20px; font-weight: 600; margin: 15px 0 8px; }
+    .product-card .gia { color: #e63946; font-weight: 700; font-size: 18px; }
+    .star i { color: #FFD43B; margin: 0 2px; }
+
+    .saleoff {
+      background: linear-gradient(135deg, #e63946 0%, #ff6b6b 50%, #ff8e53 100%);
+      padding: 60px 40px; text-align: center; color: #fff;
+    }
+    .sale-title { font-size: 32px; font-weight: 800; margin-bottom: 15px; }
+    .sale-subtitle { font-size: 18px; margin-bottom: 25px; }
+    .sale-btn {
+      display: inline-block; background: #fff; color: #e63946;
+      padding: 12px 35px; border-radius: 50px; text-decoration: none;
+      font-weight: 700; font-size: 16px; transition: all 0.3s ease;
+    }
+    .sale-btn:hover { transform: translateY(-2px); }
+
+    footer {
+      background: #1a1a1a; color: #ddd; padding: 50px 40px 25px;
+    }
+    .footer-container {
+      display: flex; justify-content: space-between; flex-wrap: wrap;
+      gap: 30px; max-width: 1200px; margin: 0 auto;
+    }
+    .footer-section { flex: 1; min-width: 250px; }
+    .footer-section h3 { color: #e63946; font-size: 20px; margin-bottom: 15px; }
+    .contact-info { list-style: none; padding: 0; margin: 0; }
+    .contact-info li { margin: 10px 0; display: flex; align-items: center; }
+    .contact-info i { color: #e63946; margin-right: 10px; }
+    .social-links { display: flex; gap: 12px; margin-top: 15px; }
+    .social-links a {
+      display: flex; align-items: center; justify-content: center;
+      width: 35px; height: 35px; background: #e63946; color: #fff;
+      border-radius: 50%; text-decoration: none; transition: all 0.3s ease;
+    }
+    .social-links a:hover { background: #fff; color: #e63946; }
+    .footer-bottom {
+      border-top: 1px solid #444; margin-top: 30px;
+      padding-top: 15px; text-align: center; color: #999; font-size: 14px;
+    }
+
+    @media (max-width: 768px) {
+      header { flex-direction: column; gap: 15px; padding: 15px 20px; }
+      .banner { padding: 80px 20px; }
+      .banner h2 { font-size: 36px; }
+      .content { padding: 40px 20px; }
+      .product-grid { gap: 20px; }
+      .saleoff { padding: 60px 20px; }
+      .sale-title { font-size: 28px; }
+      footer { padding: 40px 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="logo">QUÁN NGON</a>
+    <nav>
+      <a href="#">Trang chủ</a>
+      <a href="order.html">Sản phẩm</a>
+      <a href="tt.html">Thông tin</a>
+      <a href="lh.html">Liên hệ</a>
+      <a href="auth.html">Đăng nhập</a>
+    </nav>
+    <div class="header-icons">
+      <a href="cch.html"><i class="fa-solid fa-user"></i></a>
+      <a href="balance.html"><i class="fa-solid fa-dollar-sign"></i></a>
+    </div>
+  </header>
+
+  <!-- Banner -->
+  <section class="banner">
+    <h2>Món ăn Cao cấp</h2>
+    <p>Chuyên cung cấp các món ăn đảm bảo đủ chất dinh dưỡng, hợp vệ sinh và phục vụ khách hàng tốt nhất.</p>
+  </section>
+
+  <!-- Slider -->
+  <section style="padding:40px;">
+    <h3 style="text-align:center; font-size: 28px; margin-bottom: 30px;">
+      Các món được ưu đãi <i class="fa-solid fa-fire" style="color:#ff3d3d;"></i>
+    </h3>
+    <swiper-container class="mySwiper" pagination="true" navigation="true" space-between="30"
+      centered-slides="true" autoplay-delay="2500" autoplay-disable-on-interaction="false">
+      <swiper-slide><img src="https://studiovietnam.com/wp-content/uploads/2023/02/chup-anh-mon-an-1.jpg" alt=""></swiper-slide>
+      <swiper-slide><img src="https://anhvienpiano.com/wp-content/uploads/2018/10/chup-anh-mon-an-2-1.jpg" alt=""></swiper-slide>
+      <swiper-slide><img src="https://anhvienpiano.com/wp-content/uploads/2018/10/chup-anh-mon-an.jpg" alt=""></swiper-slide>
+      <swiper-slide><img src="https://images.squarespace-cdn.com/content/v1/53883795e4b016c956b8d243/1597822154096-LK0WD8P39LYLJAG0PXJ6/chup-anh-thuc-an-1.jpg" alt=""></swiper-slide>
+      <swiper-slide><img src="https://anhvienpiano.com/wp-content/uploads/2018/10/nghe-thuat-chup-anh-mon-an.jpg" alt=""></swiper-slide>
+    </swiper-container>
+  </section>
+
+  <!-- Products -->
+  <main class="content">
+    <h2>Các món ăn ưa thích</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <img src="https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-1.jpg" alt="Bánh mì">
+        <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <div class="name">Bánh mì</div>
+        <div class="gia">100.000đ</div>
+      </div>
+      <div class="product-card">
+        <img src="https://chefjob.vn/wp-content/uploads/2018/01/pho-mon-an-truyen-thong-viet-nam-noi-tieng-the-gioi.jpg" alt="Bún bò">
+        <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <div class="name">Bún bò</div>
+        <div class="gia">50.000đ</div>
+      </div>
+      <div class="product-card">
+        <img src="https://beptueu.vn/hinhanh/tintuc/top-15-hinh-anh-mon-an-ngon-viet-nam-khien-ban-khong-the-roi-mat-12.jpg" alt="Cơm tấm">
+        <div class="star"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+        <div class="name">Cơm tấm</div>
+        <div class="gia">30.000đ</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Sale -->
+  <section class="saleoff">
+    <div class="sale-title">🎉 SIÊU ƯU ĐÃI 🎉</div>
+    <div class="sale-subtitle">Giảm giá lên đến 50% cho tất cả món ăn</div>
+    <a href="order.html" class="sale-btn">Đặt hàng ngay</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>Quán</h3>
+        <p>Chúng tôi phục vụ các món ăn ngon và chất lượng, đảm bảo số 1 Việt Nam.</p>
+        <div class="social-links">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="footer-section">
+        <h3>Liên hệ</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-map-marker-alt"></i> 123 Đường 456, Quận 789, TP. 10</li>
+          <li><i class="fas fa-phone"></i> 0123 456 789</li>
+          <li><i class="fas fa-envelope"></i> info@quanabc.com</li>
+        </ul>
+        <h3 style="margin-top: 20px;">Giờ mở cửa</h3>
+        <ul class="contact-info">
+          <li><i class="fas fa-clock"></i> Thứ Hai - Thứ Sáu: 9:00 - 21:00</li>
+          <li><i class="fas fa-clock"></i> Thứ Bảy - Chủ Nhật: 10:00 - 22:00</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 Quán ABC. Tất cả quyền được bảo lưu.</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+  <script src="https://bot.orimon.ai/deploy/index.js" tenantId="795614de-93a8-4f9b-8bea-44db7268b42f"></script>
+</body>
+</html>
